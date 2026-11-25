@@ -16,9 +16,11 @@ A puzzle about linking matching colored dots with lines that never cross. Build 
 
 - **✏️ Build a board**: place dots in 26 colors (A–Z, 2 per color) on a 10-wide × 11-tall board.
   - **● Place** · **〰 Draw** (pre-link dots) · **🕳 Hole** (knock a cell out of the board) · **🧽 Erase** (one dot, line or hole at a time)
+  - "🎲 Random map" scatters holes for you.
   - Pick a time limit (1, 2, 3 or 5 min) and start solving. Pre-drawn lines and holes carry over.
 - **⚔️ Two-player match** (one device): two people take turns placing pieces.
   - 14 colors (A–N, 28 pieces) or 26 colors (A–Z, 52 pieces) · 1, 2 or 3 minutes per turn
+  - **🎲 Random map**: every round gets a new hole layout (point-symmetric for fairness; the open cells always stay connected). An empty board is also available.
   - Round 1's first player is decided by a coin toss; after that the previous loser chooses.
   - The first player opens with 1 piece; every turn after that places **2 pieces of different colors**. You can take back this turn's pieces and sketch lines while you think.
   - **⚡ Challenge**: on your turn, claim "it can't be linked anymore" — your opponent must link every completed pair within the time limit. If they do, they win; if not, the challenger wins.
@@ -45,7 +47,7 @@ npm run deploy     # build and deploy to Cloudflare
 
 | Path | What's there |
 |---|---|
-| `src/game` | UI-free rules: cells (`grid`) · drawing state (`board`) · building state (`editor`) · match turns (`versus`) · random boards (`puzzle`) · stages (`stages`) · the 6-cell rule (`rules`) |
+| `src/game` | UI-free rules: cells (`grid`) · drawing state (`board`) · building state (`editor`) · match turns (`versus`) · random maps (`map`) · random boards (`puzzle`) · stages (`stages`) · the 6-cell rule (`rules`) |
 | `src/ui` | Screens: SVG board (`board-view`) · build screen · solve screen · match screen · dialogs · i18n · best record |
 | `src/main.ts` | Navigation between screens |
 | `test` | Vitest tests |

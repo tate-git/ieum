@@ -52,6 +52,12 @@ describe('Versus', () => {
     expect(game.turn).toBe(16);   // 1 + 2×13 + 1 = 28 → 15차례 둔 뒤
   });
 
+  it('맵 빵구 칸엔 못 놓음', () => {
+    const game = new Versus(BOARD_SIZE, 14, 0, [at(3, 3)]);
+    expect(game.place(at(3, 3), 0)).toBe('hole');
+    expect(game.editor.toPuzzle().holes).toEqual([at(3, 3)]);
+  });
+
   it('남은 말이 같은 색 하나뿐이면 1개만 놓으면 됨', () => {
     const game = new Versus(BOARD_SIZE, 2, 0);
     game.place(at(0, 0), 0);

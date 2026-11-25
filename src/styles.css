@@ -132,3 +132,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 .player.turn { border-color: #f5d90a; box-shadow: 0 0 0 2px rgb(245 217 10 / 0.25); }
 .versus .board-wrap.tight { width: min(100%, calc((100dvh - 420px) * 10 / 11)); }
 .versus .palette { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.hole { fill: url(#hatch); }
+/* 만들기 아래 버튼 셋은 한 줄로 */
+.editor .actions { flex-wrap: nowrap; }
+.editor .actions button { flex: 1 1 0; padding: 12px 6px; white-space: nowrap; min-width: 0; }

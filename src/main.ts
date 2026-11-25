@@ -18,7 +18,7 @@ let currentStage = 1;
 
 const lostTitle = () => t('못 이었어요 · 졌어요', 'Not linked — you lose');
 
-const versusSettings: VersusSettings = { names: ['', ''], colors: 14, turnSeconds: 180 };
+const versusSettings: VersusSettings = { names: ['', ''], colors: 14, turnSeconds: 180, randomMap: true };
 
 function showHome(): void {
   stopPlay?.();

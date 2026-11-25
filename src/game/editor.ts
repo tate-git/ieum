@@ -42,6 +42,15 @@ export class Editor {
     return this.#holes.has(cellKey(cell));
   }
 
+  /** 빵구를 한꺼번에 바꿈(랜덤 맵) · 점이 있는 칸은 건너뜀 · 선은 다 지움 */
+  setHoles(cells: readonly Cell[]): void {
+    this.#holes.clear();
+    for (const cell of cells) {
+      if (this.colorAt(cell) === undefined) this.#holes.set(cellKey(cell), cell);
+    }
+    this.#paths = new Map();
+  }
+
   /** 빵구 내기 · 이미 빵구면 메움 · 점 있는 칸은 못 냄(false) · 지나던 선은 지움 */
   toggleHole(cell: Cell): boolean {
     const key = cellKey(cell);

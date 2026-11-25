@@ -4,7 +4,7 @@ import { sameCell, type Cell, type Size } from './grid';
 
 export type Player = 0 | 1;
 
-export type VersusPlaceResult = 'placed' | 'removed' | 'occupied' | 'full' | 'sameColor' | 'enough' | 'notMine';
+export type VersusPlaceResult = 'placed' | 'removed' | 'occupied' | 'full' | 'sameColor' | 'enough' | 'notMine' | 'hole';
 
 export const OPENING_PIECES = 1;
 export const PIECES_PER_TURN = 2;
@@ -20,8 +20,10 @@ export class Versus {
   /** 마지막으로 말을 놓고 차례를 넘긴 사람(도전받으면 이 사람이 증명) */
   #lastPlacer: Player | null = null;
 
-  constructor(size: Size, colors: number, first: Player) {
+  /** holes: 이번 라운드 맵의 빵구 */
+  constructor(size: Size, colors: number, first: Player, holes: readonly Cell[] = []) {
     this.editor = new Editor(size, colors);
+    this.editor.setHoles(holes);
     this.#current = first;
   }
 
@@ -60,6 +62,7 @@ export class Versus {
   }
 
   check(cell: Cell, color: number): VersusPlaceResult {
+    if (this.editor.isHole(cell)) return 'hole';
     const owner = this.editor.colorAt(cell);
     if (owner !== undefined) return this.#placed.some(piece => sameCell(piece.cell, cell)) ? 'removed' : owner === color ? 'notMine' : 'occupied';
     if (this.#placed.length >= this.required()) return 'enough';

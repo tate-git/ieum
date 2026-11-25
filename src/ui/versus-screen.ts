@@ -1,4 +1,5 @@
 // 두 사람 대결(한 컴퓨터): 설정 → 동전 던지기 → 번갈아 놓기(차례마다 제한 시간) → ⚡ 도전이면 상대가 다 이어 증명 → 라운드 결과 · 다음 라운드는 진 사람이 선후공을 고름
+import { randomHoles } from '../game/map';
 import { BOARD_SIZE } from '../game/stages';
 import { other, Versus, type Player, type VersusPlaceResult } from '../game/versus';
 import { BoardView, boardScene, COLORS, LETTERS, letterColor } from './board-view';
@@ -18,6 +19,8 @@ export interface VersusSettings {
   names: [string, string];
   colors: number;
   turnSeconds: number;
+  /** 라운드마다 빵구 맵을 새로 */
+  randomMap: boolean;
 }
 
 interface Match {
@@ -61,6 +64,11 @@ export function showVersusSetup(app: HTMLElement, settings: VersusSettings): voi
         <div class="segmented two">${COLOR_CHOICES.map(count => `<button type="button" data-colors="${count}" aria-selected="${count === settings.colors}">${count === 14 ? 'A~N · 28' : 'A~Z · 52'}${t('개', '')}</button>`).join('')}</div>
         <p class="muted small">${t('한 차례 시간', 'Time per turn')}</p>
         <div class="segmented three">${TURN_CHOICES.map(seconds => `<button type="button" data-turn="${seconds}" aria-selected="${seconds === settings.turnSeconds}">⏱ ${seconds / 60}${t('분', ' min')}</button>`).join('')}</div>
+        <p class="muted small">${t('맵', 'Map')}</p>
+        <div class="segmented two">
+          <button type="button" data-map="random" aria-selected="${settings.randomMap}">🎲 ${t('랜덤 맵', 'Random map')}</button>
+          <button type="button" data-map="empty" aria-selected="${!settings.randomMap}">⬜ ${t('빈 판', 'Empty board')}</button>
+        </div>
         <button type="button" class="primary wide" data-vs="start">🪙 ${t('동전 던지고 시작', 'Toss a coin and start')}</button>
       </section>`;
   };
@@ -72,11 +80,12 @@ export function showVersusSetup(app: HTMLElement, settings: VersusSettings): voi
   };
   render();
   app.querySelector('.versus-setup')!.addEventListener('click', event => {
-    const target = (event.target as HTMLElement).closest<HTMLElement>('[data-colors], [data-turn], [data-vs]');
+    const target = (event.target as HTMLElement).closest<HTMLElement>('[data-colors], [data-turn], [data-map], [data-vs]');
     if (!target) return;
     readNames();
     if (target.dataset.colors) settings.colors = Number(target.dataset.colors);
     if (target.dataset.turn) settings.turnSeconds = Number(target.dataset.turn);
+    if (target.dataset.map) settings.randomMap = target.dataset.map === 'random';
     if (target.dataset.vs === 'start') return tossCoin(app, { settings, round: 1, scores: [0, 0] });
     showVersusSetup(app, settings);
   });
@@ -93,12 +102,15 @@ function tossCoin(app: HTMLElement, match: Match): void {
 }
 
 function playRound(app: HTMLElement, match: Match, first: Player): void {
-  const game = new Versus(BOARD_SIZE, match.settings.colors, first);
+  const holes = match.settings.randomMap ? randomHoles(BOARD_SIZE, Math.random) : [];
+  const game = new Versus(BOARD_SIZE, match.settings.colors, first, holes);
   playTurn(app, match, game);
 }
 
 function placeMessage(result: VersusPlaceResult): string {
   switch (result) {
+    case 'hole':
+      return t('빵구 칸엔 못 놓아요', 'That cell is a hole');
     case 'occupied':
     case 'notMine':
       return t('이미 말이 있어요(이번 차례에 놓은 말만 되돌릴 수 있어요)', 'Taken — you can only take back pieces from this turn');

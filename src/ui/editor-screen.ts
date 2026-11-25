@@ -3,6 +3,7 @@ import { Board } from '../game/board';
 import { BoardView, boardScene, COLORS, LETTERS, letterColor } from './board-view';
 import { MIN_PAIRS, type Editor, type PlaceResult } from '../game/editor';
 import type { Cell } from '../game/grid';
+import { randomHoles } from '../game/map';
 import { t } from './i18n';
 import { MIN_SPAN } from '../game/rules';
 
@@ -51,6 +52,7 @@ export function showEditor(app: HTMLElement, editor: Editor, settings: EditorSet
       </div>
       <div class="actions">
         <button type="button" data-action="clear-dots">🧹 ${t('다 지우기', 'Clear all')}</button>
+        <button type="button" data-action="random-map">🎲 ${t('랜덤 맵', 'Random map')}</button>
         <button type="button" class="primary" data-action="solve">▶ ${t('풀기 시작', 'Start solving')}</button>
       </div>
     </section>`;
@@ -154,6 +156,10 @@ export function showEditor(app: HTMLElement, editor: Editor, settings: EditorSet
     if (target.dataset.tool) settings.tool = target.dataset.tool as Tool;
     if (target.dataset.action === 'clear-dots') {
       editor.clear();
+      rebuildBoard();
+    }
+    if (target.dataset.action === 'random-map') {
+      editor.setHoles(randomHoles(editor.size, Math.random));
       rebuildBoard();
     }
     if (target.dataset.action === 'solve') return onSolve();

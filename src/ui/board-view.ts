@@ -20,6 +20,8 @@ export function letterColor(color: number): string {
 const DOT_RADIUS = 0.36;
 const LINE_WIDTH = 0.36;
 const SVG_NS = 'http://www.w3.org/2000/svg';
+/** 빵구 칸 빗금 무늬 */
+const HATCH = '<defs><pattern id="hatch" width="0.2" height="0.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="0.2" height="0.2" fill="#08090c"/><rect width="0.06" height="0.2" fill="#3a3f4c"/></pattern></defs>';
 
 export interface Scene {
   readonly holes: ReadonlySet<string>;
@@ -77,8 +79,11 @@ export class BoardView {
     const cells: string[] = [];
     for (let row = 0; row < this.#size.rows; row++) {
       for (let col = 0; col < this.#size.cols; col++) {
-        // 빵구 낸 칸은 판에서 빠진 자리(배경만)
-        if (holes.has(cellKey({ row, col }))) continue;
+        // 빵구 낸 칸은 판에서 빠진 자리(빗금)
+        if (holes.has(cellKey({ row, col }))) {
+          cells.push(`<rect class="hole" x="${col}" y="${row}" width="1" height="1"/>`);
+          continue;
+        }
         const color = tint.get(cellKey({ row, col }));
         const fill = color === undefined ? '' : ` style="fill:${COLORS[color]}"`;
         cells.push(`<rect class="cell${color === undefined ? '' : ' filled'}" x="${col}" y="${row}" width="1" height="1"${fill}/>`);
@@ -93,6 +98,6 @@ export class BoardView {
     const dotMarks = dots.map(({ cell: { row, col }, color, done }) => `
       <circle class="dot${done ? ' done' : ''}" cx="${col + 0.5}" cy="${row + 0.5}" r="${DOT_RADIUS}" fill="${COLORS[color]}"/>
       <text class="letter" x="${col + 0.5}" y="${row + 0.53}" fill="${letterColor(color)}">${LETTERS[color]}</text>`);
-    this.#svg.innerHTML = `<g>${cells.join('')}</g><g>${lineMarks.join('')}</g><g>${dotMarks.join('')}</g>`;
+    this.#svg.innerHTML = `${HATCH}<g>${cells.join('')}</g><g>${lineMarks.join('')}</g><g>${dotMarks.join('')}</g>`;
   }
 }
