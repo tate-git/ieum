@@ -7,9 +7,9 @@
 ▶ **플레이: https://ieum.lunchtime.workers.dev**
 
 <p>
-  <img src="docs/screens/home-ko.png" width="250" alt="처음 화면">
-  <img src="docs/screens/build-ko.png" width="250" alt="판 만들기: 점 놓기 · 선 잇기 · 빵구 · 지우기">
-  <img src="docs/screens/solve-ko.png" width="250" alt="풀기: 시간 안에 같은 색끼리 잇기">
+  <img src="docs/screens/versus-turn-ko.png" width="250" alt="대결: 랜덤 맵 위에서 번갈아 말 놓기 · 선 그어 보기">
+  <img src="docs/screens/versus-prove-ko.png" width="250" alt="⚡ 도전받은 사람이 시간 안에 모든 짝을 이어 증명">
+  <img src="docs/screens/versus-result-ko.png" width="250" alt="라운드 결과: 진 사람이 다음 라운드 선후공을 고름">
 </p>
 
 ## 소개

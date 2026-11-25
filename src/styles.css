@@ -136,3 +136,6 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 /* 만들기 아래 버튼 셋은 한 줄로 */
 .editor .actions { flex-wrap: nowrap; }
 .editor .actions button { flex: 1 1 0; padding: 12px 6px; white-space: nowrap; min-width: 0; }
+/* 결과 창 버튼: 둘은 나란히, 셋째부터는 아래 줄 전체 */
+.result .row { flex-wrap: wrap; }
+.result .row button { flex: 1 1 40%; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

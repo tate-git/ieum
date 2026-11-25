@@ -7,9 +7,9 @@ A puzzle about linking matching colored dots with lines that never cross. Build 
 ▶ **Play: https://ieum.lunchtime.workers.dev**
 
 <p>
-  <img src="docs/screens/home-en.png" width="250" alt="Home">
-  <img src="docs/screens/build-en.png" width="250" alt="Build: place dots, draw, holes, erase">
-  <img src="docs/screens/solve-en.png" width="250" alt="Solve: link matching dots in time">
+  <img src="docs/screens/versus-turn-en.png" width="250" alt="Match: take turns placing pieces on a random map, sketching lines">
+  <img src="docs/screens/versus-prove-en.png" width="250" alt="⚡ Challenged player must link every pair in time">
+  <img src="docs/screens/versus-result-en.png" width="250" alt="Round result: the loser picks who goes first next">
 </p>
 
 ## About
