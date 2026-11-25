@@ -5,6 +5,7 @@ import { Editor } from './game/editor';
 import { showEditor, type EditorSettings } from './ui/editor-screen';
 import { lang, setLang, t } from './ui/i18n';
 import { showPlay } from './ui/play-screen';
+import { showVersusSetup, stopVersus, type VersusSettings } from './ui/versus-screen';
 import { generatePuzzle } from './game/puzzle';
 import { MIN_SPAN } from './game/rules';
 import { BOARD_SIZE, stage as stageFor } from './game/stages';
@@ -17,8 +18,11 @@ let currentStage = 1;
 
 const lostTitle = () => t('못 이었어요 · 졌어요', 'Not linked — you lose');
 
+const versusSettings: VersusSettings = { names: ['', ''], colors: 14, turnSeconds: 180 };
+
 function showHome(): void {
   stopPlay?.();
+  stopVersus();
   const best = loadBest();
   app.innerHTML = `
     <section class="home">
@@ -32,6 +36,7 @@ function showHome(): void {
         <li>${t('시간 안에 모든 색을 이으면 이기고, 못 이으면 져요.', 'Link every color in time to win — otherwise you lose.')}</li>
       </ol>
       <button type="button" class="primary wide" data-action="build">✏️ ${t('판 만들기', 'Build a board')}</button>
+      <button type="button" class="wide" data-action="versus">⚔️ ${t('둘이 대결', 'Two-player match')}</button>
       <button type="button" class="wide" data-action="random">🎲 ${t('랜덤 판 도전', 'Random challenge')}${best > 0 ? ` <small class="muted">· ${t(`최고 ${best}단계`, `best: stage ${best}`)}</small>` : ''}</button>
     </section>`;
 }
@@ -94,6 +99,9 @@ app.addEventListener('click', event => {
       return solveBuilt();
     case 'random':
       return playStage(1);
+    case 'versus':
+      stopPlay?.();
+      return showVersusSetup(app, versusSettings);
     case 'next':
       return playStage(currentStage + 1);
   }

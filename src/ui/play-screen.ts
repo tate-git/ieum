@@ -1,24 +1,17 @@
 // 풀기 화면(랜덤 판 · 만든 판 공용): 같은 색끼리 끌어 잇기 · 시간 안에 다 이으면 이김, 시간이 끝나면 짐
 import { Board, type Paths } from '../game/board';
 import { BoardView, boardScene } from './board-view';
+import { openDialog, type DialogContent } from './dialog';
 import { t } from './i18n';
 import type { Puzzle } from '../game/puzzle';
 
 const TICK_MS = 100;
 const LOW_TIME_SECONDS = 10;
 
-/** 결과 창 내용 · 버튼은 data-action 으로 화면 밖(main)에서 처리 */
-export interface ResultContent {
-  readonly icon: string;
-  readonly title: string;
-  readonly note: string;
-  readonly actions: readonly { readonly action: string; readonly label: string; readonly primary?: boolean }[];
-}
-
 export interface PlayOptions {
   readonly title: string;
   readonly seconds: number;
-  readonly result: (won: boolean, leftSeconds: number) => ResultContent;
+  readonly result: (won: boolean, leftSeconds: number) => DialogContent;
   readonly onEnd?: (won: boolean) => void;
   /** 미리 그어 둔 선 */
   readonly paths?: Paths;
@@ -41,7 +34,6 @@ export function showPlay(app: HTMLElement, puzzle: Puzzle, { title, seconds, res
         <button type="button" data-action="clear-lines">🧹 ${t('선 다 지우기', 'Clear lines')}</button>
         <button type="button" data-action="give-up">🏳️ ${t('포기', 'Give up')}</button>
       </div>
-      <dialog id="result" class="result"></dialog>
     </section>`;
   const view = new BoardView(app.querySelector('#board')!, puzzle.size);
   const eraser = app.querySelector<HTMLButtonElement>('[data-action="eraser"]')!;
@@ -65,9 +57,7 @@ export function showPlay(app: HTMLElement, puzzle: Puzzle, { title, seconds, res
     board.end();
     clearInterval(timer);
     onEnd?.(won);   // 기록 저장이 결과 글보다 먼저
-    const dialog = app.querySelector<HTMLDialogElement>('#result')!;
-    dialog.innerHTML = resultHtml(result(won, Math.ceil((deadline - performance.now()) / 1000)));
-    dialog.showModal();
+    openDialog(app.querySelector('.play')!, result(won, Math.ceil((deadline - performance.now()) / 1000)));
   };
 
   const tick = () => {
@@ -116,11 +106,6 @@ export function showPlay(app: HTMLElement, puzzle: Puzzle, { title, seconds, res
   refresh();
   tick();
   return () => clearInterval(timer);
-}
-
-function resultHtml({ icon, title, note, actions }: ResultContent): string {
-  const buttons = actions.map(({ action, label, primary }) => `<button type="button"${primary ? ' class="primary"' : ''} data-action="${action}">${label}</button>`);
-  return `<p class="icon">${icon}</p><h2>${title}</h2><p class="muted">${note}</p><div class="row">${buttons.join('')}</div>`;
 }
 
 /** 「2:05」 · 1분 안이면 「45초」 */

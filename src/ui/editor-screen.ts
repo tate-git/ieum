@@ -82,7 +82,7 @@ export function showEditor(app: HTMLElement, editor: Editor, settings: EditorSet
       <button type="button" role="radio" aria-checked="${index === settings.color}" data-color="${index}" style="--swatch:${color};--letter:${letterColor(index)}" ${settings.tool === 'dot' ? '' : 'disabled'}>
         <span class="swatch">${LETTERS[index]}</span><small>${editor.dotsOf(index).length}/2</small>
       </button>`).join('');
-    view.render(boardScene(board, editor.halfDots()));
+    view.render(boardScene(board));
     for (const button of app.querySelectorAll<HTMLElement>('[data-tool]')) button.setAttribute('aria-selected', String(button.dataset.tool === settings.tool));
     for (const button of app.querySelectorAll<HTMLElement>('[data-seconds]')) button.setAttribute('aria-selected', String(Number(button.dataset.seconds) === settings.seconds));
     pairCount.textContent = t(`${editor.pairCount()}쌍 · 이음 ${board.connectedCount()}`, `${editor.pairCount()} pairs · ${board.connectedCount()} linked`);

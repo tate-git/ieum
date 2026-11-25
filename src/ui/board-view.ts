@@ -27,15 +27,15 @@ export interface Scene {
   readonly dots: readonly { readonly cell: Cell; readonly color: number; readonly done: boolean }[];
 }
 
-/** 판의 지금 모습 · extraDots: 짝이 안 맞아 판에 안 들어간 점(만들기 화면) */
-export function boardScene(board: Board, extraDots: readonly { cell: Cell; color: number }[] = []): Scene {
-  const { pairs, holes } = board.puzzle;
+/** 판의 지금 모습 */
+export function boardScene(board: Board): Scene {
+  const { pairs, holes, singles } = board.puzzle;
   return {
     holes: new Set(holes.map(cellKey)),
     lines: pairs.map(({ color }) => ({ color, path: board.pathOf(color), short: board.isTooShort(color) })),
     dots: [
       ...pairs.flatMap(({ color, ends }) => ends.map(cell => ({ cell, color, done: board.isConnected(color) }))),
-      ...extraDots.map(dot => ({ ...dot, done: false })),
+      ...singles.map(dot => ({ ...dot, done: false })),
     ],
   };
 }

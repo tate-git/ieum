@@ -22,6 +22,7 @@ export class Board {
       this.#pairs.set(pair.color, pair);
       for (const end of pair.ends) this.#dots.set(cellKey(end), pair.color);
     }
+    for (const { cell, color } of puzzle.singles) this.#dots.set(cellKey(cell), color);
     for (const [color, path] of paths) {
       if (this.#pairs.has(color) && path.length > 0) this.#paths.set(color, [...path]);
     }
@@ -88,6 +89,7 @@ export class Board {
   begin(cell: Cell): boolean {
     const dot = this.dotAt(cell);
     if (dot !== undefined) {
+      if (!this.#pairs.has(dot)) return false;   // 짝 없는 점은 이을 게 없음
       this.#paths.set(dot, [cell]);
       this.#active = dot;
       return true;

@@ -114,10 +114,10 @@ export class Editor {
       .filter(([, dots]) => dots.length === 2)
       .sort(([a], [b]) => a - b)
       .map(([color, dots]) => ({ color, ends: [dots[0], dots[1]] as const, solution: [] }));
-    return { size: this.size, pairs, holes: [...this.#holes.values()] };
+    return { size: this.size, pairs, holes: [...this.#holes.values()], singles: this.halfDots() };
   }
 
-  /** 한 개만 놓인 점(풀 판에는 안 들어가지만 화면엔 보임) */
+  /** 한 개만 놓인 점(잇지 않지만 선을 막음) */
   halfDots(): { cell: Cell; color: number }[] {
     return [...this.#dots.entries()].filter(([, dots]) => dots.length === 1).map(([color, [cell]]) => ({ cell, color }));
   }

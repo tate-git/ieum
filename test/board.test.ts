@@ -10,6 +10,7 @@ const puzzle: Puzzle = {
     { color: 3, ends: [{ row: 2, col: 0 }, { row: 2, col: 6 }], solution: [] },
   ],
   holes: [],
+  singles: [],
 };
 const at = (row: number, col: number) => ({ row, col });
 
@@ -73,7 +74,7 @@ describe('Board', () => {
   });
 
   it('양 끝이 닿아도 6칸 미만이면 이어진 것으로 안 침 · 지우개는 선 하나만', () => {
-    const short: Puzzle = { size: { rows: 5, cols: 7 }, pairs: [{ color: 0, ends: [at(0, 0), at(0, 2)], solution: [] }, { color: 1, ends: [at(4, 0), at(4, 6)], solution: [] }], holes: [] };
+    const short: Puzzle = { size: { rows: 5, cols: 7 }, pairs: [{ color: 0, ends: [at(0, 0), at(0, 2)], solution: [] }, { color: 1, ends: [at(4, 0), at(4, 6)], solution: [] }], holes: [], singles: [] };
     const board = new Board(short);
     board.begin(at(0, 0));
     board.drag(at(0, 2));

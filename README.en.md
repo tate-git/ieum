@@ -17,6 +17,12 @@ A puzzle about linking matching colored dots with lines that never cross. Build 
 - **✏️ Build a board**: place dots in 26 colors (A–Z, 2 per color) on a 10-wide × 11-tall board.
   - **● Place** · **〰 Draw** (pre-link dots) · **🕳 Hole** (knock a cell out of the board) · **🧽 Erase** (one dot, line or hole at a time)
   - Pick a time limit (1, 2, 3 or 5 min) and start solving. Pre-drawn lines and holes carry over.
+- **⚔️ Two-player match** (one device): two people take turns placing pieces.
+  - 14 colors (A–N, 28 pieces) or 26 colors (A–Z, 52 pieces) · 1, 2 or 3 minutes per turn
+  - Round 1's first player is decided by a coin toss; after that the previous loser chooses.
+  - The first player opens with 1 piece; every turn after that places **2 pieces of different colors**. You can take back this turn's pieces and sketch lines while you think.
+  - **⚡ Challenge**: on your turn, claim "it can't be linked anymore" — your opponent must link every completed pair within the time limit. If they do, they win; if not, the challenger wins.
+  - Run out of time on your turn and you lose. Once every piece is down, the next player challenges or accepts a draw.
 - **🎲 Random challenge**: always-solvable boards; each stage adds colors and tightens the clock.
 - Korean and English, phones and desktops. Runs entirely in the browser — no server.
 
@@ -31,7 +37,7 @@ A puzzle about linking matching colored dots with lines that never cross. Build 
 ```sh
 npm install
 npm run dev        # http://localhost:8802
-npm test           # puzzle generation, drawing and building rules
+npm test           # puzzle generation, drawing, building and match rules
 npm run deploy     # build and deploy to Cloudflare
 ```
 
@@ -39,8 +45,8 @@ npm run deploy     # build and deploy to Cloudflare
 
 | Path | What's there |
 |---|---|
-| `src/game` | UI-free rules: cells (`grid`) · drawing state (`board`) · building state (`editor`) · random boards (`puzzle`) · stages (`stages`) · the 6-cell rule (`rules`) |
-| `src/ui` | Screens: SVG board (`board-view`) · build screen · solve screen · i18n · best record |
+| `src/game` | UI-free rules: cells (`grid`) · drawing state (`board`) · building state (`editor`) · match turns (`versus`) · random boards (`puzzle`) · stages (`stages`) · the 6-cell rule (`rules`) |
+| `src/ui` | Screens: SVG board (`board-view`) · build screen · solve screen · match screen · dialogs · i18n · best record |
 | `src/main.ts` | Navigation between screens |
 | `test` | Vitest tests |
 | `docs/og-image.html` | Source of the link preview image (`public/og.png`) |

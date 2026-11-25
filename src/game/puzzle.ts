@@ -14,6 +14,8 @@ export interface Puzzle {
   readonly pairs: readonly Pair[];
   /** 빵구 낸 칸(점도 선도 못 들어감) */
   readonly holes: readonly Cell[];
+  /** 짝 없이 하나만 놓인 점(잇지는 않지만 선이 못 지나감) */
+  readonly singles: readonly { readonly cell: Cell; readonly color: number }[];
 }
 
 export interface PuzzleOptions {
@@ -30,7 +32,7 @@ const PUZZLE_TRIES = 500;
 export function generatePuzzle(options: PuzzleOptions, random: Random): Puzzle {
   for (let attempt = 0; attempt < PUZZLE_TRIES; attempt++) {
     const pairs = tryPuzzle(options, random);
-    if (pairs) return { size: options.size, pairs, holes: [] };
+    if (pairs) return { size: options.size, pairs, holes: [], singles: [] };
   }
   throw new Error('판을 만들지 못했어요');
 }
